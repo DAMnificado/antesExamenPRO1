@@ -17,8 +17,8 @@ import java.util.Scanner;
  */
 public class ej3 {
 
-    static File archivo = new File("src/ejercicio3");
-    static File archivoTemp = new File("src/ejercicio3");
+    static File archivo = new File("./src/ejercicio3/datos.txt");
+    static File archivoTemp = new File("./src/ejercicio3/temporal.txt");
     static Scanner sc = new Scanner(System.in);
 
     public static void añadirLibro() {
@@ -55,6 +55,9 @@ public class ej3 {
         } catch (EOFException e) {
             System.out.println("Fin de archivo");
 
+        }catch(StreamCorruptedException e ){
+            System.out.println("Stream corrupto");
+
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -75,8 +78,9 @@ public class ej3 {
                 libro = (Libro) ois.readObject();
                 if (libroAConsultar.equalsIgnoreCase(libro.getTitulo())) {
                     System.out.println("Si, tenemos este libro disponible");
+                } else {
+                    System.out.println("Este libro no se encuentra en nuestra biblioteca");
                 }
-                System.out.println("Este libro no se encuentra en nuestra biblioteca");
                 cont++;
             }
         } catch (StreamCorruptedException e) {
@@ -97,27 +101,32 @@ public class ej3 {
     }
 
     public static void borrarLibro() {
+
         sc = new Scanner(System.in);
         try (ObjectInputStream oisA = new ObjectInputStream(new FileInputStream(archivo));
              ObjectOutputStream oisT = new ObjectOutputStream(new FileOutputStream(archivoTemp, true))) {
             Libro libro;
+            System.out.println("Dime el titulo del libro que quieres borrar");
+            String tituloABorrar = sc.next();
+
             while (true) {
-                System.out.println("Dime el titulo del libro que quieres borrar");
-                String tituloABorrar = sc.next();
                 libro = (Libro) oisA.readObject();
                 if (tituloABorrar.equalsIgnoreCase(libro.getTitulo())) {
                     System.out.println("Eliminado");
+                }else {
+                    oisT.writeObject(libro);
                 }
-                oisT.writeObject(libro);
             }
         }catch (EOFException e){
             System.out.println("Fin de archivo");
             archivo.delete();
             archivoTemp.renameTo(archivo);
+
         }catch (StreamCorruptedException e){
             System.out.println("Stream corrupto");
             archivo.delete();
             archivoTemp.renameTo(archivo);
+
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -133,9 +142,9 @@ public class ej3 {
         try (ObjectInputStream oisA = new ObjectInputStream(new FileInputStream(archivo));
              ObjectOutputStream oisT = new ObjectOutputStream(new FileOutputStream(archivoTemp))) {
             Libro libro;
+            System.out.println("Que libro quieres modificar?");
+            String libroAModificar = sc.next();
             while (true) {
-                System.out.println("Que libro quieres modificar?");
-                String libroAModificar = sc.next();
                 libro = (Libro) oisA.readObject();
                 if (libroAModificar.equalsIgnoreCase(libro.getTitulo())) {
                     sc = new Scanner(System.in);
@@ -150,8 +159,9 @@ public class ej3 {
                     int numPagNuevo = sc.nextInt();
                     Libro libroMod = new Libro(tituloNuevo, autorNuevo, editorialNueva, numPagNuevo);
                     oisT.writeObject(libroMod);
+                }else {
+                    oisT.writeObject(libro);
                 }
-                oisT.writeObject(libro);
             }
         }catch(StreamCorruptedException e){
             System.out.println("Stream corrupto");

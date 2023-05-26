@@ -13,10 +13,10 @@ public class Main {
         Scanner sc;
         int num = 0;
         while (true){
-            System.out.println("*************** Opcion 1: Añadir libros al fichero. ***************");
-            System.out.println("*************** Opcion 2: Consultar Libro por título. ***************");
-            System.out.println("*************** Opcion 3: Listar libros ***************");
-            System.out.println("*************** Opcion 4: Eliminar Libro por título. ***************");
+            System.out.println("*************** Opcion 1: Añadir libros al fichero ***************");
+            System.out.println("*************** Opcion 2: Listar Libro ***************");
+            System.out.println("*************** Opcion 3: Consultar libro ***************");
+            System.out.println("*************** Opcion 4: Eliminar Libro por título ***************");
             System.out.println("*************** Opcion 5: Modificar Libro ***************");
 
             sc = new Scanner(System.in);

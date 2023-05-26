@@ -27,11 +27,12 @@ import java.util.Scanner;
  */
 
 public class ej2 {
-    static File archivo = new File(".src/ejercicio2/ej2.java");
+
+    static File archivo = new File("./src/ejercicio2/datos.txt");
     static Scanner sc = new Scanner(System.in);
 
     public static void llenarArchivo() {
-
+        crearArhcivo(archivo);
         //creo arrays con 4 posiciones
         ArrayList<String> listaProvincias = new ArrayList<>();
         ArrayList<Integer> listaCodigos = new ArrayList<>();
@@ -40,10 +41,11 @@ public class ej2 {
         for (int i = 0; i < 4; i++) {
 
                 System.out.println("Dime una provincia de España");
-                String provincia = sc.nextLine();
+                String provincia = sc.next();
                 boolean correcto = false;
                 Scanner sc = new Scanner(System.in);
-                while (!correcto) {
+
+                while (correcto) {
 
                     try {
                             System.out.println("Introduce un codigo postal: ");
@@ -101,13 +103,25 @@ public class ej2 {
         if (cp < 0) {
             throw new valorNegativo("El valor no puede ser negativo");
         }
-        if (cp < 01 | cp > 530000) {
+
+        if (cp < 01 | cp > 53000) {
             throw new valoresComprendidos("Los dos primeros números solo pueden estar comprendidos entre 0 y 52");
         }
 
         String codigo = String.valueOf(cp);
         if (codigo.length() != 5) {
             throw new longitud("La longitud tiene que ser de 5 caracteres");
+        }
+    }
+
+    public static void crearArhcivo(File archivo){
+
+        if (!archivo.exists()){
+            try {
+                archivo.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
